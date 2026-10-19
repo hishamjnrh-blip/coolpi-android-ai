@@ -149,7 +149,7 @@ class MainActivity : Activity() {
             hint = hintText
             setText(initial)
             textSize = 14f
-            singleLine = true
+            setSingleLine(true)
             if (secret) {
                 inputType = android.text.InputType.TYPE_CLASS_TEXT or
                     android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
