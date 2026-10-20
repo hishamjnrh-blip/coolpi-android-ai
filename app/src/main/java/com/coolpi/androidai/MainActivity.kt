@@ -77,7 +77,7 @@ class MainActivity : Activity() {
         )
         modelInput = field(
             "Model ID",
-            prefs.getString("model", "deepseek-v4-flash") ?: "deepseek-v4-flash"
+            prefs.getString("model", "gpt-6-luna") ?: "gpt-6-luna"
         )
         keyInput = field(
             "TokenBOM API key",
