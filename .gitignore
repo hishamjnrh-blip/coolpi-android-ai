@@ -1,0 +1,21 @@
+# Local Android SDK configuration
+local.properties
+
+# Gradle and build output
+.gradle/
+build/
+**/build/
+
+# Local APKs
+*.apk
+*.aab
+
+# Local helper scripts used during development
+add_skills.py
+connect_skills.py
+add_integrations.py
+
+# Source backups
+*.pre-*
+*.before-upgrade
+*.candidate
