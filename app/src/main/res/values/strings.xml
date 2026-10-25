@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Cool Pi AI</string>
+    <string name="accessibility_service_description">Allows Cool Pi AI to inspect visible screen content and perform user-approved interactions when you enable the service.</string>
 </resources>

@@ -258,6 +258,66 @@ class MainActivity : Activity() {
             setTextColor(muted)
             setPadding(0, dp(4), 0, dp(8))
         })
+        page.addView(smallButton("Enable Accessibility") {
+            try {
+                startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+            } catch (_: Exception) {
+                toast("Accessibility Settings could not be opened.")
+            }
+        })
+
+        page.addView(smallButton("Read current screen") {
+            val service = CoolPiAccessibilityService.instance
+            if (service == null) {
+                toast("Enable Cool Pi AI Screen Access in Android Accessibility Settings first.")
+            } else {
+                AlertDialog.Builder(this)
+                    .setTitle("Visible screen text")
+                    .setMessage(service.readVisibleText())
+                    .setPositiveButton("Close", null)
+                    .show()
+            }
+        })
+
+        val actionTextField = makeField("Exact visible text to tap")
+        page.addView(actionTextField)
+        page.addView(smallButton("Request tap (confirm first)") {
+            val target = actionTextField.text.toString().trim()
+            if (target.isBlank()) {
+                toast("Enter the exact text of a visible control.")
+            } else if (CoolPiAccessibilityService.instance == null) {
+                toast("Enable Cool Pi AI Screen Access in Android Accessibility Settings first.")
+            } else {
+                AlertDialog.Builder(this)
+                    .setTitle("Approve screen action?")
+                    .setMessage("Allow Cool Pi AI to tap the visible control matching: \"$target\"?")
+                    .setNegativeButton("Cancel", null)
+                    .setPositiveButton("Approve tap") { _, _ ->
+                        val service = CoolPiAccessibilityService.instance
+                        val success = service?.clickVisibleText(target) == true
+                        toast(if (success) "Tap action performed." else "No matching clickable control was found.")
+                    }
+                    .show()
+            }
+        })
+
+        page.addView(smallButton("Scroll screen (confirm first)") {
+            if (CoolPiAccessibilityService.instance == null) {
+                toast("Enable Cool Pi AI Screen Access in Android Accessibility Settings first.")
+            } else {
+                AlertDialog.Builder(this)
+                    .setTitle("Approve scrolling?")
+                    .setMessage("Allow Cool Pi AI to scroll the current app screen down?")
+                    .setNegativeButton("Cancel", null)
+                    .setPositiveButton("Approve scroll") { _, _ ->
+                        val success = CoolPiAccessibilityService.instance?.scrollForward() == true
+                        toast(if (success) "Scroll action performed." else "No scrollable area was found.")
+                    }
+                    .show()
+            }
+        })
+
+        page.addView(space(8))
         appSearch = makeField("Search installed apps")
         page.addView(appSearch)
         val scroll = ScrollView(this)
